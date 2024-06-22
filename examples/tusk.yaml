@@ -1,6 +1,33 @@
-#!/usr/bin/env -S go run github.com/mudler/yip@latest -s boot
+#!/usr/bin/env -S go run github.com/rliebz/tusk@latest boot -c
 ---
-tasks:
+interpreter: bash -c
+
+options:
+  gorun:
+    default: go run
+  gum:
+    default: ${gorun} github.com/charmbracelet/gum@latest
+  yip:
+    default: ${gorun} github.com/moondev/yip@509ee46
+  lolcat:
+    default:
+      command: curl https://pkgs.run/cli/lolcat
+
+tasks: 
   boot:
+    options:
+      config:
+        short: 'c'
+        default: cloud-config.yaml
     run:
-      - go run github.com/moondev/yip@latest -s boot cloud-config.yaml
+      - |
+          cat ${config} | gum write \
+          --char-limit=0 \
+          --width=0 \
+          --height=100 \
+          > /tmp/${config}
+      - cat /tmp/${config} | gum pager
+
+      - cat /tmp/${config} | ${lolcat}
+      - sleep 3
+      - ${yip} -s boot /tmp/${config}
