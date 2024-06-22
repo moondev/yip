@@ -1,0 +1,6 @@
+#!/usr/bin/env -S go run github.com/mudler/yip@latest -s boot
+---
+tasks:
+  boot:
+    run:
+      - go run github.com/moondev/yip@latest -s boot cloud-config.yaml

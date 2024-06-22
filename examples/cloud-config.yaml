@@ -1,0 +1,19 @@
+#cloud-config
+# users:
+# - name: "bar"
+#   passwd: "foo"
+#   groups: "users"
+#   ssh_authorized_keys:
+#   - faaapploo
+# ssh_authorized_keys:
+#   - asdd
+runcmd:
+- neofetch
+- echo "{{.Values.node.hostname}}"
+# hostname: "bar"
+# write_files:
+# - encoding: b64
+#   content: CiMgVGhpcyBmaWxlIGNvbnRyb2xzIHRoZSBzdGF0ZSBvZiBTRUxpbnV4
+#   path: /foo/bar
+#   permissions: "0644"
+#   owner: "bar"

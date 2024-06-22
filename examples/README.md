@@ -1,0 +1,1 @@
+yip -s boot cloud-config.yaml

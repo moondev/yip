@@ -1,6 +1,8 @@
-module github.com/mudler/yip
+module github.com/moondev/yip
 
-go 1.20
+go 1.21
+
+toolchain go1.22.3
 
 require (
 	github.com/Masterminds/sprig/v3 v3.2.3
@@ -15,6 +17,7 @@ require (
 	github.com/mauromorales/xpasswd v0.3.1
 	github.com/moby/moby v24.0.9+incompatible
 	github.com/mudler/entities v0.0.0-20240611135956-f8f11ba52c2f
+	github.com/mudler/yip v1.8.1
 	github.com/onsi/ginkgo/v2 v2.17.1
 	github.com/onsi/gomega v1.33.0
 	github.com/pkg/errors v0.9.1
@@ -62,7 +65,7 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/packethost/packngo v0.29.0 // indirect
 	github.com/phayes/permbits v0.0.0-20190612203442-39d7c581d2ee // indirect
 	github.com/pierrec/lz4 v2.6.1+incompatible // indirect
