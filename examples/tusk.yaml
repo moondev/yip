@@ -12,6 +12,10 @@ options:
   lolcat:
     default:
       command: curl https://pkgs.run/cli/lolcat
+  yq3:
+    default: ${gorun} github.com/mikefarah/yq/v3@latest
+  yq4:
+    default: ${gorun} github.com/mikefarah/yq/v4@latest
 
 tasks: 
   boot:
@@ -30,4 +34,8 @@ tasks:
 
       - cat /tmp/${config} | ${lolcat}
       - sleep 3
-      - ${yip} -s boot /tmp/${config}
+      - echo '#cloud-config' > /tmp/cc.yaml
+      - cat /tmp/${config} | ${yq3} r - --stripComments -P >> /tmp/cc.yaml
+      - cat /tmp/cc.yaml | ${yq4} -PC
+      - sleep 2
+      - ${yip} -s boot /tmp/cc.yaml
