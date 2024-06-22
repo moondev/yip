@@ -6,7 +6,7 @@ options:
   go:
     default: go run golang.org/dl/go1.20@latest download && go run golang.org/dl/go1.20@latest run
   gorun:
-    default: go run
+    default: ${go} run
   gum:
     default: ${gorun} github.com/charmbracelet/gum@latest
   yip:
