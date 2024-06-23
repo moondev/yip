@@ -73,5 +73,5 @@ tasks:
       - sleep 5
       - multipass list
       - sleep 5
-      - cat /tmp/cc.yaml | multipass launch -n boot -c 2 -m 6G --cloud-init -
+      - cat /tmp/cc.yaml | multipass launch -n boot -c 2 -d 30G -m 6G --cloud-init - jammy
       - multipass exec boot -- sudo /tmp/boot.sh

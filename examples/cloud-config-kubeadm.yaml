@@ -74,22 +74,34 @@ write_files:
     install -m 755 runc.amd64 /usr/local/sbin/runc
 
     mkdir -p /etc/containerd
-    containerd config default > /etc/containerd/config.toml
-    sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+    cat > /etc/containerd/config.toml <<-------
+    version = 2
 
+    imports = ["/etc/containerd/conf.d/*.toml"]
 
-    systemctl enable containerd
-    systemctl start containerd
+    [plugins]
+      [plugins."io.containerd.grpc.v1.cri"]
+        sandbox_image = "registry.k8s.io/pause:3.9"
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+        runtime_type = "io.containerd.runc.v2"
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+        SystemdCgroup = true
+    ------
+    echo 'runtime-endpoint: unix:///var/run/containerd/containerd.sock' > /etc/crictl.yaml
+
 
     curl -L  https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.28.0/crictl-v1.28.0-linux-amd64.tar.gz | tar xvz -C /usr/local/bin
-    kubeadm config images pull
+    systemctl daemon-reload
+    systemctl enable containerd
+    systemctl start containerd
+    #kubeadm config images pull
     crictl images
 
     systemctl daemon-reload
     systemctl restart kubelet
     systemctl restart containerd
 
-    kubeadm init --pod-network-cidr=10.244.0.0/16 -v=9
+    kubeadm init --pod-network-cidr=10.244.0.0/16 
     kubectl get nodes -o wide
     kubectl get pods -A -o wide
     kubectl taint node --all node-role.kubernetes.io/control-plane:NoSchedule-
@@ -154,7 +166,7 @@ write_files:
     [Install]
     WantedBy=multi-user.target
 
-- path: /etc/containerd/containerd.toml
+- path: /tmp/containerd.toml
   permissions: '0777'
   content: |
     disabled_plugins = []
