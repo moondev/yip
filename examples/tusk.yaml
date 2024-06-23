@@ -70,5 +70,8 @@ tasks:
       - sleep 2
       # - ${yip} -s boot /tmp/cc.yaml
       - multipass delete boot --purge || true
+      - sleep 5
+      - multipass list
+      - sleep 5
       - cat /tmp/cc.yaml | multipass launch -n boot -c 2 -m 6G --cloud-init -
       - multipass exec boot -- sudo /tmp/boot.sh
