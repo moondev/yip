@@ -1,0 +1,31 @@
+#!/usr/bin/env -S go run github.com/rliebz/tusk@latest --file tusk.yaml boot -c
+---
+#cloud-config
+# users:
+# - name: "bar"
+#   passwd: "foo"
+#   groups: "users"
+#   ssh_authorized_keys:
+#   - faaapploo
+# ssh_authorized_keys:
+#   - asdd
+runcmd:
+- apt update || true
+- apt install -y neofetch golang-go || true
+- neofetch
+- go run github.com/moondev/yip/cmd/gofetch@latest
+- echo "{{.Values.node.hostname}}"
+# hostname: "bar"
+
+# write_files:
+# - path: /tmp/boot.sh
+#   permissions: "0777"
+#    content: |
+#      #!/usr/bin/env bash
+#      set -e
+#      set -x
+# apt update
+# apt install -y neofetch golang-go
+# neofetch
+# go run github.com/moondev/yip/cmd/gofetch@latest | go run github.com/mikefarah/yq/v3@latest r - -PC
+

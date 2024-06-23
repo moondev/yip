@@ -20,6 +20,17 @@ options:
     default: ${gorun} github.com/mikefarah/yq/v4@latest
 
 tasks:
+
+  up:
+    run:
+      - |
+          tmux new-session <<-------
+          kind delete clusters --all
+          kind create cluster
+          k9s --headless
+          split-window -h  'sleep 10 && clusterctl init -i docker'
+          ------
+
   gorun:
     options:
       goargs:
@@ -34,6 +45,8 @@ tasks:
       config:
         short: 'c'
         default: cloud-config.yaml
+      run:
+        default: ubuntu:jammy
     run:
       - task:
           name: gorun
@@ -55,4 +68,7 @@ tasks:
       - cat /tmp/${config} | ${yq3} r - --stripComments -P >> /tmp/cc.yaml
       - cat /tmp/cc.yaml | ${yq3} r - -PC
       - sleep 2
-      - ${yip} -s boot /tmp/cc.yaml
+      # - ${yip} -s boot /tmp/cc.yaml
+      - multipass delete boot --purge || true
+      - cat /tmp/cc.yaml | multipass launch -n boot -c 2 -m 6G --cloud-init -
+      - multipass exec boot -- sudo /tmp/boot.sh
