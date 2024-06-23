@@ -60,7 +60,7 @@ tasks:
           --width=0 \
           --height=100 \
           > /tmp/${config}
-      - cat /tmp/${config} | gum pager
+      # - cat /tmp/${config} | gum pager
 
       - cat /tmp/${config} | ${lolcat}
       - sleep 3
