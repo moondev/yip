@@ -99,6 +99,7 @@ write_files:
     kubeadm init --pod-network-cidr=10.244.0.0/16 -v=9
     curl -L https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_Linux_amd64.tar.gz | tar xvz
     mv k9s /usr/local/bin/k9s
+    export KUBECONFIG=/etc/kubernetes/admin.conf
     k9s --headless
     kubectl get nodes -o wide
     kubectl get pods -A -o wide
