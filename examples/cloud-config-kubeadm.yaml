@@ -68,9 +68,12 @@ write_files:
     curl -L https://github.com/containernetworking/plugins/releases/download/v1.5.0/cni-plugins-linux-amd64-v1.5.0.tgz | tar xvz -C /opt/cni/bin
     ls -ll /opt/cni/bin
 
-    kubeadm config images pull
+    curl -L curl -L https://raw.githubusercontent.com/containerd/containerd/main/containerd.service > /etc/systemd/system/containerd.service > /etc/systemd/system/containerd.service
+    systemctl enable containerd
+    systemctl start containerd
 
     curl -L  https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz | tar xvz -C /usr/local/bin
+    kubeadm config images pull
     crictl images
 
     systemctl daemon-reload
