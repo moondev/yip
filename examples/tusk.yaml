@@ -4,7 +4,7 @@ interpreter: bash -c
 
 options:
   go:
-    default: go run golang.org/dl/go1.20@latest download && go run golang.org/dl/go1.20@latest
+    default: go run golang.org/dl/go1.20@latest
   gorun:
     default: ${go} run
   gum:
@@ -19,13 +19,27 @@ options:
   yq4:
     default: ${gorun} github.com/mikefarah/yq/v4@latest
 
-tasks: 
+tasks:
+  gorun:
+    options:
+      goargs:
+        default:
+          command: echo $@
+    run:
+      - go run golang.org/dl/go1.20@latest download
+      - go run golang.org/dl/go1.20@latest version
+      - go run golang.org/dl/go1.20@latest run ${goargs}
   boot:
     options:
       config:
         short: 'c'
         default: cloud-config.yaml
     run:
+      - task:
+          name: gorun
+          options:
+            goargs: github.com/moondev/yip/cmd/gofetch@latest
+
       - |
           cat ${config} | gum write \
           --char-limit=0 \
