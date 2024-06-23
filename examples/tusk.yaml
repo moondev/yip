@@ -10,7 +10,7 @@ options:
   gum:
     default: ${gorun} github.com/charmbracelet/gum@latest
   yip:
-    default: ${gorun} github.com/moondev/yip@509ee46
+    default: ${gorun} github.com/moondev/yip@4c239da
   lolcat:
     default:
       command: curl https://pkgs.run/cli/lolcat
@@ -38,7 +38,8 @@ tasks:
       - task:
           name: gorun
           options:
-            goargs: github.com/moondev/yip/cmd/gofetch@latest
+            goargs: github.com/moondev/yip/cmd/gofetch@4c239da
+
 
       - |
           cat ${config} | gum write \
@@ -52,6 +53,6 @@ tasks:
       - sleep 3
       - echo '#cloud-config' > /tmp/cc.yaml
       - cat /tmp/${config} | ${yq3} r - --stripComments -P >> /tmp/cc.yaml
-      - cat /tmp/cc.yaml | ${yq4} -PC
+      - cat /tmp/cc.yaml | ${yq3} r - -PC
       - sleep 2
       - ${yip} -s boot /tmp/cc.yaml
